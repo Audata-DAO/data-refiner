@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     )
     
     SCHEMA_NAME: str = Field(
-        default="Google Drive Analytics",
+        default="Google Drive Analytics of QuickstartDAO20250714",
         description="Name of the schema"
     )
     
