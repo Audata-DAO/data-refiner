@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class OffChainSchema(BaseModel):
     name: str
     version: str
