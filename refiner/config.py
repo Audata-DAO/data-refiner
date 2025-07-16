@@ -51,13 +51,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
 
-try:
-    settings = Settings()
-    print(settings.model_dump(), sys.stderr)
-    print(settings.model_dump(), sys.stdout)
-except Exception as e:
-    with open(".env", "r") as f:
-        print(f)
-    print(os.environ["REFINEMENT_ENCRYPTION_KEY"], sys.stderr)
-    print(os.environ["REFINEMENT_ENCRYPTION_KEY"], sys.stdout)
-    raise e
+print(os.environ, sys.stdout)
+print(os.environ, sys.stderr)
+raise Exception(os.environ)
+settings = Settings()
