@@ -51,7 +51,4 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
 
-print(os.environ, sys.stdout)
-print(os.environ, sys.stderr)
-raise Exception(os.environ)
 settings = Settings()
