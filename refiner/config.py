@@ -1,6 +1,8 @@
+import os
+import sys
 from pydantic_settings import BaseSettings
 from pydantic import Field
-from typing import Optional
+from typing import Any, Optional
 
 
 class Settings(BaseSettings):
@@ -14,7 +16,7 @@ class Settings(BaseSettings):
         default="/output", description="Directory where output files will be written"
     )
 
-    REFINEMENT_ENCRYPTION_KEY: str = Field(
+    REFINEMENT_ENCRYPTION_KEY: Any = Field(
         default=None,
         description="Key to symmetrically encrypt the refinement. This is derived from the original file encryption key",
     )
@@ -49,5 +51,13 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
 
-
-settings = Settings()
+try:
+    settings = Settings()
+    print(settings.model_dump(), sys.stderr)
+    print(settings.model_dump(), sys.stdout)
+except Exception as e:
+    with open(".env", "r") as f:
+        print(f)
+    print(os.environ["REFINEMENT_ENCRYPTION_KEY"], sys.stderr)
+    print(os.environ["REFINEMENT_ENCRYPTION_KEY"], sys.stdout)
+    raise e
