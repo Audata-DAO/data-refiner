@@ -4,17 +4,16 @@ import os
 
 from refiner.models.offchain_schema import OffChainSchema
 from refiner.models.output import Output
-from refiner.transformer.user_transformer import UserTransformer
+from refiner.transformer.audio_transformer import AudioTransformer
 from refiner.config import settings
-from refiner.utils.encrypt import encrypt_file
-from refiner.utils.ipfs import upload_file_to_ipfs, upload_json_to_ipfs
+from refiner.utils import encrypt_file, upload_file_to_storj, upload_json_to_storj
 
 
 class Refiner:
     def __init__(self):
         self.db_path = os.path.join(settings.OUTPUT_DIR, "db.libsql")
 
-    def transform(self) -> Output:
+    def transform(self, s3) -> Output:
         """Transform all input files into the database."""
         logging.info("Starting data transformation")
         output = Output()
@@ -26,8 +25,7 @@ class Refiner:
                 with open(input_file, "r") as f:
                     input_data = json.load(f)
 
-                    # Transform account data
-                    transformer = UserTransformer(self.db_path)
+                    transformer = AudioTransformer(self.db_path)
                     transformer.process(input_data)
                     logging.info(f"Transformed {input_filename}")
 
@@ -39,23 +37,26 @@ class Refiner:
                         dialect=settings.SCHEMA_DIALECT,
                         schema=transformer.get_schema(),
                     )
-                    output.schema = schema
+                    output.data_schema = schema
 
-                    # Upload the schema to IPFS
+                    # Upload the schema to Storj
                     schema_file = os.path.join(settings.OUTPUT_DIR, "schema.json")
                     with open(schema_file, "w") as f:
                         json.dump(schema.model_dump(), f, indent=4)
-                        schema_ipfs_hash = upload_json_to_ipfs(schema.model_dump())
-                        logging.info(
-                            f"Schema uploaded to IPFS with hash: {schema_ipfs_hash}"
+                        uploaded_schema_url = upload_json_to_storj(
+                            s3, schema.model_dump()
                         )
+                        logging.info(f"Schema uploaded to storj: {uploaded_schema_url}")
 
                     # Encrypt and upload the database to IPFS
                     encrypted_path = encrypt_file(
-                        settings.REFINEMENT_ENCRYPTION_KEY, self.db_path
+                        settings.REFINEMENT_ENCRYPTION_KEY,
+                        self.db_path,  # type: ignore
                     )
-                    ipfs_hash = upload_file_to_ipfs(encrypted_path)
-                    output.refinement_url = f"{settings.IPFS_GATEWAY_URL}/{ipfs_hash}"
+                    uploaded_file_path = upload_file_to_storj(s3, encrypted_path)
+                    output.refinement_url = (
+                        f"{settings.STORJ_GATEWAY_URL}/{uploaded_file_path}"
+                    )
                     continue
 
         logging.info("Data transformation completed successfully")

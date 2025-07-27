@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class OffChainSchema(BaseModel):
@@ -6,4 +6,5 @@ class OffChainSchema(BaseModel):
     version: str
     description: str
     dialect: str
-    schema: str
+    # Call it data_schema in order not to override anything
+    data_schema: str = Field(alias="schema")

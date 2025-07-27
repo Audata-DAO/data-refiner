@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Dict, Any
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from refiner.models.refined import Base
@@ -31,7 +31,7 @@ class DataTransformer:
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind=self.engine)
 
-    def transform(self, data: Dict[str, Any]) -> List[Base]:
+    def transform(self, data: dict[str, Any]) -> list:
         """
         Transform JSON data into SQLAlchemy model instances.
 
