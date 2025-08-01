@@ -11,20 +11,21 @@ class AudioTransformer(DataTransformer):
 
         # Create user instance
         audio = AudioRefined(
+            language_code=unrefined_audio.language_code,
             audio_length=unrefined_audio.audio_length,
             audio_type=unrefined_audio.audio_type,
             audio_source=unrefined_audio.audio_source,
-            user_id=unrefined_audio.user.user_id,
+            wallet_address=unrefined_audio.user.wallet_address,
         )
 
         models = [audio]
 
         user = UserRefined(
-            user_id=unrefined_audio.user.user_id,
-            age=unrefined_audio.user.age,
-            country_code=unrefined_audio.user.country_code,
+            wallet_address=unrefined_audio.user.wallet_address,
+            birth_year=unrefined_audio.user.birth_year,
+            birth_month=unrefined_audio.user.birth_month,
             occupation=unrefined_audio.user.occupation,
-            language_code=unrefined_audio.user.language_code,
+            country=unrefined_audio.user.country,
             region=unrefined_audio.user.region,
         )
         models.append(user)

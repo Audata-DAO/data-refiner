@@ -18,21 +18,21 @@ Base = declarative_base()
 class UserRefined(Base):
     __tablename__ = "users"
 
-    user_id = Column(String, primary_key=True)
-    age = Column(Integer, nullable=False)
-    country_code = Column(VARCHAR(2), nullable=False)
+    wallet_address = Column(String, primary_key=True)
+    birth_year = Column(Integer, nullable=False)
+    birth_month = Column(String, nullable=False)
     occupation = Column(VARCHAR(30), nullable=False)
-    language_code = Column(VARCHAR(10), nullable=False)
-    region = Column(VARCHAR(100), nullable=False)
+    country = Column(String, nullable=False) # TODO
+    region = Column(String, nullable=False)
 
     audio = relationship("AudioRefined", back_populates="user")
 
-    __table_args__ = (CheckConstraint("age >= 0", name="check_age"),)
+    __table_args__ = (CheckConstraint("birth_year >= 1900", name="check_age"),)
 
-    @validates("age")
-    def validate_age(self, _, value):
+    @validates("birth_year")
+    def validate_birth_year(self, _, value):
         if value < 0:
-            raise ValueError("age must be a non-negative integer")
+            raise ValueError("birth year must be a non-negative integer")
         return value
 
 
@@ -41,9 +41,10 @@ class AudioRefined(Base):
 
     audio_id = Column(Integer, primary_key=True, autoincrement=True)
 
+    language_code = Column(VARCHAR(10), nullable=False)
     audio_length = Column(Numeric, nullable=False)
     audio_source = Column(VARCHAR(10), nullable=False)
     audio_type = Column(VARCHAR(10), nullable=False)
 
-    user_id = Column(String, ForeignKey("users.user_id"), nullable=False)
+    wallet_address = Column(String, ForeignKey("users.wallet_address"), nullable=False)
     user = relationship("UserRefined", back_populates="audio")

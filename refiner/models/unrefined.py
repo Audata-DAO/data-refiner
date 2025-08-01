@@ -2,15 +2,16 @@ from pydantic import BaseModel, Field
 
 
 class User(BaseModel):
-    user_id: str
-    age: int = Field(ge=0)
-    country_code: str = Field(max_length=2)
+    wallet_address: str
+    birth_year: int = Field(ge=1900)
+    birth_month: str
     occupation: str = Field(max_length=30)
-    language_code: str = Field(max_length=10)
-    region: str = Field(max_length=100)
+    country: str
+    region: str
 
 
 class Audio(BaseModel):
+    language_code: str = Field(max_length=10)
     audio_length: int
     audio_source: str = Field(max_length=10)
     audio_type: str = Field(max_length=10)
