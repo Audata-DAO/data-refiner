@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     OUTPUT_DIR: str = "/output"
     REFINEMENT_ENCRYPTION_KEY: str
     SCHEMA_VERSION: str = "0.0.1"
-    SCHEMA_NAME: str = "Test Schema 20250727"
-    SCHEMA_DESCRIPTION: str = "Test Schema Description"
+    SCHEMA_NAME: str = "Audata Schema"
+    SCHEMA_DESCRIPTION: str = "Audata Schema"
     SCHEMA_DIALECT: str = "sqlite"
     PINATA_API_KEY: str
     PINATA_API_SECRET: str
