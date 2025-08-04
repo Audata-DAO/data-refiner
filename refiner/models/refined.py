@@ -3,7 +3,7 @@ from sqlalchemy import (
     CheckConstraint,
     Column,
     Numeric,
-    String,
+    Text,
     Integer,
     ForeignKey,
 )
@@ -17,13 +17,12 @@ Base = declarative_base()
 # Define database models - the schema is generated using these
 class UserRefined(Base):
     __tablename__ = "users"
-
-    wallet_address = Column(String, primary_key=True)
+    wallet_address = Column(Text, primary_key=True)
     birth_year = Column(Integer, nullable=False)
-    birth_month = Column(String, nullable=False)
-    occupation = Column(VARCHAR(30), nullable=False)
-    country = Column(String, nullable=False) # TODO
-    region = Column(String, nullable=False)
+    birth_month = Column(Text, nullable=False)
+    occupation = Column(Text, nullable=False)
+    country = Column(Text, nullable=False)
+    region = Column(Text, nullable=False)
 
     audio = relationship("AudioRefined", back_populates="user")
 
@@ -46,5 +45,5 @@ class AudioRefined(Base):
     audio_source = Column(VARCHAR(10), nullable=False)
     audio_type = Column(VARCHAR(10), nullable=False)
 
-    wallet_address = Column(String, ForeignKey("users.wallet_address"), nullable=False)
+    wallet_address = Column(Text, ForeignKey("users.wallet_address"), nullable=False)
     user = relationship("UserRefined", back_populates="audio")

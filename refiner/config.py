@@ -11,10 +11,9 @@ class Settings(BaseSettings):
     SCHEMA_NAME: str = "Test Schema 20250727"
     SCHEMA_DESCRIPTION: str = "Test Schema Description"
     SCHEMA_DIALECT: str = "sqlite"
-    STORJ_ACCESS_KEY: str
-    STORJ_SECRET_KEY: str
-    STORJ_BUCKET_NAME: str = "my-bucket"
-    STORJ_GATEWAY_URL: str = "https://gateway.storjshare.io/"
+    PINATA_API_KEY: str
+    PINATA_API_SECRET: str
+    PINATA_GATEWAY: str
 
     class Config:
         env_file = ".env"

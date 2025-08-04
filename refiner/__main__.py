@@ -5,9 +5,6 @@ import sys
 import traceback
 import zipfile
 
-import boto3
-from botocore.client import Config
-
 from refiner.refine import Refiner
 from refiner.config import settings
 
@@ -26,16 +23,7 @@ def run() -> None:
 
     refiner = Refiner()
 
-    s3 = boto3.client(
-        "s3",
-        endpoint_url="https://gateway.storjshare.io",
-        aws_access_key_id=settings.STORJ_ACCESS_KEY,
-        aws_secret_access_key=settings.STORJ_SECRET_KEY,
-        config=Config(signature_version="s3v4"),
-        region_name="eu1",
-    )
-
-    output = refiner.transform(s3)
+    output = refiner.transform()
 
     output_path = os.path.join(settings.OUTPUT_DIR, "output.json")
     with open(output_path, "w") as f:

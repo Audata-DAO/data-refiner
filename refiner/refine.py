@@ -6,14 +6,14 @@ from refiner.models.offchain_schema import OffChainSchema
 from refiner.models.output import Output
 from refiner.transformer.audio_transformer import AudioTransformer
 from refiner.config import settings
-from refiner.utils import encrypt_file, upload_file_to_storj, upload_json_to_storj
+from refiner.utils import encrypt_file, upload_file_to_ipfs, upload_json_to_ipfs
 
 
 class Refiner:
     def __init__(self):
         self.db_path = os.path.join(settings.OUTPUT_DIR, "db.libsql")
 
-    def transform(self, s3) -> Output:
+    def transform(self) -> Output:
         """Transform all input files into the database."""
         logging.info("Starting data transformation")
         output = Output()
@@ -39,24 +39,19 @@ class Refiner:
                     )
                     output.data_schema = schema
 
-                    # Upload the schema to Storj
                     schema_file = os.path.join(settings.OUTPUT_DIR, "schema.json")
                     with open(schema_file, "w") as f:
                         json.dump(schema.model_dump(), f, indent=4)
-                        uploaded_schema_url = upload_json_to_storj(
-                            s3, schema.model_dump()
-                        )
-                        logging.info(f"Schema uploaded to storj: {uploaded_schema_url}")
+                        schema_ipfs_hash = upload_json_to_ipfs(schema.model_dump())
+                        logging.info(f"Schema uploaded to IPFS with hash: {schema_ipfs_hash}")
 
                     # Encrypt and upload the database to IPFS
                     encrypted_path = encrypt_file(
                         settings.REFINEMENT_ENCRYPTION_KEY,
                         self.db_path,  # type: ignore
                     )
-                    uploaded_file_path = upload_file_to_storj(s3, encrypted_path)
-                    output.refinement_url = (
-                        f"{settings.STORJ_GATEWAY_URL}/{uploaded_file_path}"
-                    )
+                    ipfs_hash = upload_file_to_ipfs(encrypted_path)
+                    output.refinement_url = f"{settings.PINATA_GATEWAY}/{ipfs_hash}"
                     continue
 
         logging.info("Data transformation completed successfully")
