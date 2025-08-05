@@ -147,7 +147,7 @@ def upload_file_to_ipfs(file_path=None):
     """
     if file_path is None:
         # Default to the encrypted database file
-        file_path = os.path.join(settings.OUTPUT_DIR, "db.libsql.pgp")
+        file_path = None # os.path.join(settings.OUTPUT_DIR, "db.libsql.pgp")
 
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
