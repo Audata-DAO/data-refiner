@@ -16,6 +16,7 @@ class AudioTransformer(DataTransformer):
             audio_type=unrefined_audio.audio_type,
             audio_source=unrefined_audio.audio_source,
             wallet_address=unrefined_audio.user.wallet_address,
+            raw_data=unrefined_audio.raw_data,
         )
 
         models = [audio]

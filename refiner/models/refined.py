@@ -2,6 +2,7 @@ from sqlalchemy import (
     VARCHAR,
     CheckConstraint,
     Column,
+    LargeBinary,
     Numeric,
     Text,
     Integer,
@@ -44,6 +45,7 @@ class AudioRefined(Base):
     audio_length = Column(Numeric, nullable=False)
     audio_source = Column(VARCHAR(10), nullable=False)
     audio_type = Column(VARCHAR(10), nullable=False)
+    raw_data = Column(LargeBinary, nullable=False)
 
     wallet_address = Column(Text, ForeignKey("users.wallet_address"), nullable=False)
     user = relationship("UserRefined", back_populates="audio")

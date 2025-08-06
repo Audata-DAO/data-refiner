@@ -16,3 +16,4 @@ class Audio(BaseModel):
     audio_source: str = Field(max_length=10)
     audio_type: str = Field(max_length=10)
     user: User
+    raw_data: bytes
