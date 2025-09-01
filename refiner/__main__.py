@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 def run() -> None:
     """Transform all input files into the database."""
+    raise Exception("WHAT THE HELL")
     input_files_exist = os.path.isdir(settings.INPUT_DIR) and bool(
         os.listdir(settings.INPUT_DIR)
     )
