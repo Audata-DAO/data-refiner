@@ -4,6 +4,7 @@ import os
 import sys
 import traceback
 import zipfile
+import requests
 
 from refiner.refine import Refiner
 from refiner.config import settings
@@ -13,7 +14,8 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 def run() -> None:
     """Transform all input files into the database."""
-    raise Exception("WHAT THE HELL")
+    response = requests.get('https://www.random.org/decimal-fractions/?num=1&dec=2&col=1&format=plain&rnd=new')
+    raise Exception("WHAT THE HELL", float(response.text.strip()))
     input_files_exist = os.path.isdir(settings.INPUT_DIR) and bool(
         os.listdir(settings.INPUT_DIR)
     )
