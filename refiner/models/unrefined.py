@@ -12,7 +12,7 @@ class User(BaseModel):
 
 class Audio(BaseModel):
     language_code: str = Field(max_length=10)
-    audio_length: int
+    audio_length: float
     audio_source: str = Field(max_length=10)
     audio_type: str = Field(max_length=10)
     user: User
