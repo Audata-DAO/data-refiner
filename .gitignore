@@ -3,9 +3,10 @@
 __pycache__/
 *.pyc
 
-/input/user.json
 /output/*
 !/output/.gitkeep
+/input/*
+!/input/.gitkeep
 .env
 
 .idea/
