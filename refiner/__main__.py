@@ -48,6 +48,6 @@ if __name__ == "__main__":
     try:
         run()
     except Exception as e:
-        logging.error(f"Error during data transformation: {e}")
+        logging.error(f"Error during data transformation: {e}, dir contents{os.listdir(settings.INPUT_DIR)}, ")
         traceback.print_exc()
         sys.exit(1)
