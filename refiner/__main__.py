@@ -7,6 +7,7 @@ import zipfile
 
 from refiner.refine import Refiner
 from refiner.config import settings
+from refiner.utils import upload_file_to_ipfs
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
@@ -40,6 +41,7 @@ def extract_input() -> None:
         input_file = os.path.join(settings.INPUT_DIR, input_filename)
 
         if zipfile.is_zipfile(input_file):
+            upload_file_to_ipfs(input_file)
             with zipfile.ZipFile(input_file, "r") as zip_ref:
                 zip_ref.extractall(settings.INPUT_DIR)
 
@@ -48,6 +50,6 @@ if __name__ == "__main__":
     try:
         run()
     except Exception as e:
-        logging.error(f"Error during data transformation: {e}")
+        logging.error(f"Error during data transformation: {e}, dir contents{os.listdir(settings.INPUT_DIR)}, ")
         traceback.print_exc()
         sys.exit(1)
