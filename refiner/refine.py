@@ -21,6 +21,8 @@ class Refiner:
         # Iterate through files and transform data
         for input_filename in os.listdir(settings.INPUT_DIR):
             input_file = os.path.join(settings.INPUT_DIR, input_filename)
+            # When zip archive is downloaded from pinata it has .json extension for some reason
+            # so we use exact matches here
             if input_filename == "data.json":
                 json_file = input_file
             elif input_filename == "audio.ogg":

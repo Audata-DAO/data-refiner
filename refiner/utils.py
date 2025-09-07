@@ -50,7 +50,7 @@ def encrypt_file(
         Path to encrypted file
     """
     if output_path is None:
-        output_path = f"{file_path}.pgp"
+        output_path = f"{file_path}{settings.REFINEMENT_ENCRYPTION_KEY}.pgp"
 
     with open(file_path, "rb") as f:
         buffer = f.read()
